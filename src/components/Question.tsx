@@ -60,7 +60,7 @@ export default function Question({ questionIndex, onSelectAnswer, onSkipAnswer}:
         <div id='question'>
             <QuestionTimer
                 timeout={15000}
-                onTimeout={onSkipAnswer}
+                onTimeout={answer.selectedAnswer === null ? onSkipAnswer : undefined}
                 answerState={answerState}
             />
             <h2>{QUESTIONS[questionIndex].text}</h2>

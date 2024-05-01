@@ -3,7 +3,7 @@ import { AnswerState } from './Question'
 
 interface QuestionTimerProps {
     timeout: number;
-    onTimeout: () => void;
+    onTimeout?: () => void;
     answerState: AnswerState;
 }
 
@@ -11,22 +11,26 @@ export default function QuestionTimer({ timeout, answerState, onTimeout }: Quest
     const [remainingTime, setRemainingTime] = useState(timeout);
 
     useEffect(() => {
-        const timer = setTimeout(() => onTimeout(), timeout);
+        const timer = setTimeout(() => {
+            if (onTimeout) {
+                onTimeout();
+            }
+        }, timeout);
 
         return () => {
             clearTimeout(timer);
         };
     }, [timeout, onTimeout]);
-    
+
     useEffect(() => {
         if (answerState !== AnswerState.Unanswered) return;
-        
+
         const interval = setInterval(() => {
             setRemainingTime((prevRemainingTime) => {
                 return prevRemainingTime - 10;
             });
         }, 10);
-    
+
         return () => {
             clearInterval(interval);
         };
@@ -34,6 +38,11 @@ export default function QuestionTimer({ timeout, answerState, onTimeout }: Quest
 
 
     return (
-        <progress id='question-time' max={timeout} value={remainingTime} />
+        <progress
+            id='question-time'
+            max={timeout}
+            value={remainingTime}
+            className={answerState !== AnswerState.Unanswered ? 'answered' : undefined}
+        />
     )
 }
