@@ -1,7 +1,20 @@
 import React, { useRef } from 'react'
 import { AnswerState } from './Quiz';
 
-export default function Answers({ answers, selectedAnswer, answerState, onSelect }) {
+interface AnswersProps {
+    answers: string[];
+    selectedAnswer: string | null;
+    answerState: AnswerState;
+    onSelect: (selectedAnswer: string) => void;
+}
+
+export default function Answers(props: AnswersProps) {
+    const {
+        answers,
+        selectedAnswer,
+        answerState,
+        onSelect } = props;
+
     const suffledAnswers = useRef<string[]>();
 
     if (!suffledAnswers.current) {
