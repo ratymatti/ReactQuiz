@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerState } from './Quiz';
+import { AnswerState } from './Question'
 
-export default function QuestionTimer({ timeout, onTimeout, answerState }) {
+interface QuestionTimerProps {
+    timeout: number;
+    onTimeout: () => void;
+    answerState: AnswerState;
+}
+
+export default function QuestionTimer({ timeout, answerState, onTimeout }: QuestionTimerProps) {
     const [remainingTime, setRemainingTime] = useState(timeout);
 
     useEffect(() => {
