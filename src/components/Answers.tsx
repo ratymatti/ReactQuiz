@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { AnswerState } from './Quiz';
+import { AnswerState } from './Question'
 
 interface AnswersProps {
     answers: string[];
@@ -18,17 +18,16 @@ export default function Answers(props: AnswersProps) {
     const suffledAnswers = useRef<string[]>();
 
     if (!suffledAnswers.current) {
-        suffledAnswers.current = [...answers];
-        suffledAnswers.current.sort(() => Math.random() - 0.5);
+        suffledAnswers.current = [...answers].sort(() => Math.random() - 0.5);
     }
 
     return (
         <ul id="answers">
-            {answers.map((answer) => {
+            {suffledAnswers.current.map((answer) => {
                 const isSelected: boolean = answer === selectedAnswer;
                 let cssClasses: string = '';
 
-                if (answerState === AnswerState.Answered && isSelected) {
+                if (isSelected) {
                     cssClasses = 'selected';
                 }
 
@@ -38,7 +37,11 @@ export default function Answers(props: AnswersProps) {
 
                 return (
                     <li key={answer} className='answer'>
-                        <button onClick={() => onSelect(answer)} className={cssClasses}>
+                        <button
+                            onClick={() => onSelect(answer)}
+                            className={cssClasses}
+                            disabled={answerState !== AnswerState.Unanswered}
+                        >
                             {answer}
                         </button>
                     </li>
