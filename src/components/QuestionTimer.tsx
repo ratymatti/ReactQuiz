@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { AnswerState } from './Quiz';
 
-export default function QuestionTimer({ timeout, onTimeout }) {
+export default function QuestionTimer({ timeout, onTimeout, answerState }) {
     const [remainingTime, setRemainingTime] = useState(timeout);
 
     useEffect(() => {
@@ -12,6 +13,8 @@ export default function QuestionTimer({ timeout, onTimeout }) {
     }, [timeout, onTimeout]);
     
     useEffect(() => {
+        if (answerState !== AnswerState.Unanswered) return;
+        
         const interval = setInterval(() => {
             setRemainingTime((prevRemainingTime) => {
                 return prevRemainingTime - 10;
@@ -21,7 +24,7 @@ export default function QuestionTimer({ timeout, onTimeout }) {
         return () => {
             clearInterval(interval);
         };
-    }, []);
+    }, [answerState]);
 
 
     return (
